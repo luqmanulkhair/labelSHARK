@@ -7,7 +7,8 @@ It should also include the @LabelSHARK.approach decorator that registers the cla
 
 The configure function is called with a config dict which includes a list of :class:`pycoshark:pycoshark.mongomodels.IssueSystem` under the key **its**.
 
-The get_labels function is called with a :class:`pycoshark:pycoshark.mongomodels.Commit` until all commits for the examined projects VCS are labeled.
+The set_commit function is called with a :class:`pycoshark:pycoshark.mongomodels.Commit`.
+After that the get_labels function is called to request the labels for the commit.
 
 
 Minimum Example
@@ -40,7 +41,10 @@ The get_labels method returns a list of tuples which get prefixed by the name of
         def configure(self, config):
             pass
 
-        def get_labels(self, commit):
+        def set_commit(self, commit):
+            pass
+
+        def get_labels(self):
             return [('bugfix', True)]
 
 The module of the approach should also be added to /docs/source/approaches.rst so that it shows in the documentation.

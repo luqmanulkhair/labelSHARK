@@ -186,7 +186,7 @@ and the LabelSHARK class which provides the rough plugin structure for approache
 <dl class="classmethod">
 <dt id="core.LabelSHARK.approach">
 <em class="property">classmethod </em><code class="descname">approach</code><span class="sig-paren">(</span><em>approach</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core.html#LabelSHARK.approach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#core.LabelSHARK.approach" title="Permalink to this definition">¶</a></dt>
-<dd><p>Registers an aproach with LabelSHARK.</p>
+<dd><p>Registers an approach with LabelSHARK.</p>
 <p>Should be used with the &#64;LabelSHARk.approach decorator on the class implementing the approach.</p>
 </dd></dl>
 
@@ -205,9 +205,23 @@ and the LabelSHARK class which provides the rough plugin structure for approache
 </dd></dl>
 
 <dl class="method">
+<dt id="core.LabelSHARK.get_issue_links">
+<code class="descname">get_issue_links</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core.html#LabelSHARK.get_issue_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#core.LabelSHARK.get_issue_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>A commit labeling approach can implement this but does not have to.</p>
+<p>Returns a list of MongoIDs for issues linked to the commit passed in set_commit.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="core.LabelSHARK.get_labels">
-<code class="descname">get_labels</code><span class="sig-paren">(</span><em>commit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core.html#LabelSHARK.get_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#core.LabelSHARK.get_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls every registered approach with one commit.</p>
+<code class="descname">get_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core.html#LabelSHARK.get_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#core.LabelSHARK.get_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls every registered commit labeling approach to collect the labels.</p>
+<p>Every collected label is prefixed with the name of the approach.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="core.LabelSHARK.set_commit">
+<code class="descname">set_commit</code><span class="sig-paren">(</span><em>commit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core.html#LabelSHARK.set_commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#core.LabelSHARK.set_commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes the current commit model to the approach class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

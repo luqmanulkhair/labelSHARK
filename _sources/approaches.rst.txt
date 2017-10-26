@@ -3,5 +3,5 @@ Approaches
 
 Every approach currently included in *labelSHARK*.
 
-.. automodule:: approaches.atrautsch1
+.. automodule:: approaches.adjustedszz
     :members:
