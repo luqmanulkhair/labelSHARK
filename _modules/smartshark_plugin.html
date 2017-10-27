@@ -254,10 +254,14 @@
             <span class="c1"># log.info(&#39;commit: {}, links: {}, from approach: {}&#39;.format(commit.revision_hash, v, k))</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">args</span><span class="o">.</span><span class="n">linking_approach</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;using approach </span><span class="si">{}</span><span class="s1"> for issue links&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">linking_approach</span><span class="p">))</span>
+                <span class="n">commit</span><span class="o">.</span><span class="n">linked_issue_ids</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="n">commit</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;commit: </span><span class="si">{}</span><span class="s1">, labels: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">commit</span><span class="o">.</span><span class="n">revision_hash</span><span class="p">,</span> <span class="n">labels</span><span class="p">))</span>
-        <span class="c1"># save the labels:</span>
-        <span class="c1"># commit.labels.upsert(labels)</span>
+
+        <span class="c1"># save the labels</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;set__labels__</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">}</span>
+        <span class="n">commit</span><span class="o">.</span><span class="n">upsert_one</span><span class="p">(</span><span class="o">**</span><span class="n">tmp</span><span class="p">)</span>
 
     <span class="n">end</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">default_timer</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished commit labeling in </span><span class="si">{:.5f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">end</span><span class="p">))</span></div>

@@ -97,6 +97,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Extension</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#minimum-example">Minimum Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extending-the-schema-for-a-new-approach">Extending the schema for a new approach</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#special-case-missing-index-rights-in-mongdb">Special case: missing index rights in MongDB</a></li>
 </ul>
 </li>
@@ -169,10 +170,11 @@
 <h1>Extension<a class="headerlink" href="#extension" title="Permalink to this headline">¶</a></h1>
 <p>Each approach is implemented in a python module in the approaches folder.
 It must inherit from <code class="xref py py-class docutils literal"><span class="pre">BaseLabelApproach</span></code> and must implement configure and get_labels functions.
-It should also include the &#64;LabelSHARK.approach decorator that registers the class with <em>labelSHARK</em>.</p>
+It must also include the &#64;LabelSHARK.approach decorator that registers the class with <em>labelSHARK</em>.</p>
 <p>The configure function is called with a config dict which includes a list of <a class="reference external" href="https://smartshark.github.io/pycoSHARK/api.html#pycoshark.mongomodels.IssueSystem" title="(in pycoSHARK v1.0)"><code class="docutils literal"><span class="pre">pycoshark.mongomodels.IssueSystem</span></code></a> under the key <strong>its</strong>.</p>
 <p>The set_commit function is called with a <a class="reference external" href="https://smartshark.github.io/pycoSHARK/api.html#pycoshark.mongomodels.Commit" title="(in pycoSHARK v1.0)"><code class="docutils literal"><span class="pre">pycoshark.mongomodels.Commit</span></code></a>.
 After that the get_labels function is called to request the labels for the commit.</p>
+<p>Each approach must also extend the schema for the labelSHARK plugin.</p>
 <div class="section" id="minimum-example">
 <h2>Minimum Example<a class="headerlink" href="#minimum-example" title="Permalink to this headline">¶</a></h2>
 <p>Below is the code for a minimum working example which labels every commit as bugfix commit.
@@ -206,6 +208,34 @@ The code should be placed in the approaches directory in a python file which nam
 </pre></div>
 </div>
 <p>The module of the approach should also be added to /docs/source/approaches.rst so that it shows in the documentation.</p>
+</div>
+<div class="section" id="extending-the-schema-for-a-new-approach">
+<h2>Extending the schema for a new approach<a class="headerlink" href="#extending-the-schema-for-a-new-approach" title="Permalink to this headline">¶</a></h2>
+<p>Take a look at the /plugin_packaging/schema.json. A new approach can add one or multiple fields to the labels for the commit.
+The naming is important the approach name which is also the name of the python module should be all lowercase and no dash or underscore.
+A new approach detecting bug-fixing commits named findallbugfix would be defined in approaches/findallbugfix.py and add a new field like this:</p>
+<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;collections&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;collection_name&quot;</span><span class="p">:</span> <span class="s2">&quot;commit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+           <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;StructType&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;logical_type&quot;</span><span class="p">:</span><span class="s2">&quot;Nested&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;field_name&quot;</span><span class="p">:</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;Labels for this commit.&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="o">...</span>
+              <span class="p">{</span>
+                 <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;BooleanType&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;logical_type&quot;</span><span class="p">:[</span><span class="s2">&quot;CommitLabel&quot;</span><span class="p">,</span> <span class="s2">&quot;BugfixLabel&quot;</span><span class="p">],</span>
+                 <span class="s2">&quot;field_name&quot;</span><span class="p">:</span><span class="s2">&quot;findallbugfix_bugfix&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;True if this commit is a bug-fixing commit according to the findallbugfix approach, see https://smartshark.github.io/labelSHARK/approaches.html&quot;</span>
+              <span class="p">},</span>
+            <span class="o">...</span>
+            <span class="p">]</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="special-case-missing-index-rights-in-mongdb">
 <h2>Special case: missing index rights in MongDB<a class="headerlink" href="#special-case-missing-index-rights-in-mongdb" title="Permalink to this headline">¶</a></h2>
