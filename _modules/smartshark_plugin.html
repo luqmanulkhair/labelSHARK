@@ -244,6 +244,10 @@
               <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">}</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">LabelSHARK</span><span class="p">()</span>
     <span class="n">a</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">linking_approach</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;using approach </span><span class="si">{}</span><span class="s1"> for issue links&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">linking_approach</span><span class="p">))</span>
+
     <span class="k">for</span> <span class="n">commit</span> <span class="ow">in</span> <span class="n">Commit</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">vcs_system_id</span><span class="o">=</span><span class="n">vcs</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
         <span class="n">a</span><span class="o">.</span><span class="n">set_commit</span><span class="p">(</span><span class="n">commit</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_labels</span><span class="p">()</span>
@@ -253,7 +257,8 @@
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">issue_links</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="c1"># log.info(&#39;commit: {}, links: {}, from approach: {}&#39;.format(commit.revision_hash, v, k))</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">args</span><span class="o">.</span><span class="n">linking_approach</span><span class="p">:</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;using approach </span><span class="si">{}</span><span class="s1"> for issue links&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">linking_approach</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;commit: </span><span class="si">{}</span><span class="s1">, linked to: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">commit</span><span class="o">.</span><span class="n">revision_hash</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">v</span><span class="p">])))</span>
                 <span class="n">commit</span><span class="o">.</span><span class="n">linked_issue_ids</span> <span class="o">=</span> <span class="n">v</span>
                 <span class="n">commit</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
