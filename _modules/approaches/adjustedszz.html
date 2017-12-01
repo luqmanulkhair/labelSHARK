@@ -353,7 +353,8 @@
         <span class="k">return</span> <span class="n">score</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">issue_found</span>
 
     <span class="k">def</span> <span class="nf">_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+        <span class="c1"># we log to warn because error gets to stdout in servershark</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
